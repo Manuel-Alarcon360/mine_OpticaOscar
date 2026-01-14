@@ -1,0 +1,139 @@
+<div class="card">
+  <div class="flex-col mb-4">
+    <h1 class="font-bold text-2xl text-900 m-0">Clientes</h1>
+    <p class="text-600 text-sm m-0">Crea y consulta las historia clinicas</p>
+  </div>
+  <p-table [columns]="cols" [value]="tableClient" [scrollable]="true" #dt1 scrollHeight="500px"
+    [tableStyle]="{'min-width': '50rem'}" [paginator]="true" [totalRecords]="totalRecords" [rows]="10" [lazy]="true"
+    (onLazyLoad)="loadLazy($event)">
+
+    <ng-template pTemplate="caption">
+      <div class="flex justify-between ...">
+        <div class="order-first">
+          <button class="w-full md:w-auto" [plain]="true" severity="secondary" icon="pi pi-filter-slash" type="button"
+            pButton label="Borrar filtros" (click)="clearFiltros()" tooltipPosition="top"></button>
+        </div>
+        <div class="order-last">
+          <span class="p-input-icon-left ml-auto w-full md:w-30rem">
+            <p-inputGroup>
+              <button type="button" pButton icon="pi pi-search" label="Buscar"  [pTooltip]="'Click para buscar'"
+                (click)="getSearchClient()" tooltipPosition="top"></button>
+              <input pInputText type="text" [(ngModel)]="searchValue" placeholder="Buscar cliente" />
+            </p-inputGroup>
+          </span>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns">
+
+
+          <ng-container *ngIf="col.header !='actions'">
+            {{col.header}}
+          </ng-container>
+          <ng-container *ngIf="col.header =='actions'">
+            <p-button  icon="pi pi-user-plus" label="Cliente" (click)="viewModal()" [plain]="true"
+              [style]="{ 'width': '100%', 'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}">
+            </p-button>
+          </ng-container>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+        <td *ngFor="let col of columns">
+          <ng-container *ngIf="col.field !='actions'">
+            {{rowData[col.field]}}
+          </ng-container>
+
+          <ng-container *ngIf="col.field =='actions'">
+            <div class="button-section mt-8 mx-2">
+              <button pButton class="historia-button" (click)="viewHistoriaCliente(rowData);">
+                Historia
+              </button>
+            </div>
+          </ng-container>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog [(visible)]="modalVisible" [dismissableMask]="true" [modal]="true" (onHide)="closeDialog()"
+  contentStyleClass="rounded-b border-t border-surface-300 dark:border-surface-700 m-3" [style]="{ width: '35rem' } ">
+  <ng-template pTemplate="header">
+    <span class="text-400 font-semibold tamaño text-2xl ml-3 md:p-1"> Cliente</span>
+  </ng-template>
+
+  <form [formGroup]="clientForm">
+    <div class="flex flex-col space-y-6 mt-6">
+      <div>
+        <p-floatlabel class="w-full mt-4">
+          <p-select [options]="country" optionLabel="name" formControlName="pais" styleClass="w-full"
+            optionValue="dial_code" />
+          <label>País</label>
+        </p-floatlabel>
+        <app-error-messages [control]="clientForm.get('pais')"></app-error-messages>
+      </div>
+
+      <div>
+        <p-floatlabel class="w-full">
+          <p-select [options]="listDocuments" optionLabel="label" formControlName="tipo_documento" styleClass="w-full"
+            optionValue="tipo_documento" />
+          <label>Tipo de documento</label>
+        </p-floatlabel>
+        <app-error-messages [control]="clientForm.get('tipo_documento')"></app-error-messages>
+      </div>
+      <div class="w-full mt-6">
+        <p-floatLabel class=" w-full">
+          <input class="w-full" id="Nombre" type="text" formControlName="numero_identificacion" pInputText />
+          <label for="Nombre">Número identificación</label>
+        </p-floatLabel>
+        <app-error-messages [control]="clientForm.get('numero_identificacion')"></app-error-messages>
+      </div>
+      <div class="w-full mt-6">
+        <p-floatLabel class=" w-full">
+          <input class="w-full" id="Nombre" formControlName="nombre" type="text" pInputText />
+          <label for="Nombre">Nombre</label>
+        </p-floatLabel>
+        <app-error-messages [control]="clientForm.get('nombre')"></app-error-messages>
+      </div>
+      <div class=" mt-6">
+        <p-floatLabel class="w-full">
+          <input class="w-full" id="apellidos" formControlName="apellidos" type="text" pInputText />
+          <label for="apellidos">Apellidos</label>
+        </p-floatLabel>
+        <app-error-messages [control]="clientForm.get('apellidos')"></app-error-messages>
+      </div>
+      <div class="flex  mt-6">
+        <p-floatLabel class="w-full">
+          <input class="w-full" type="email" formControlName="correo" pInputText />
+          <label for="correo">Correo (Opcional)</label>
+        </p-floatLabel>
+        <app-error-messages [control]="clientForm.get('correo')"></app-error-messages>
+      </div>
+      <div class="w-full mt-6">
+        <p-floatLabel class="block w-full">
+          <input class="w-full" type="text" formControlName="telefono" pInputText />
+          <label for="telefono">Teléfono</label>
+        </p-floatLabel>
+        <app-error-messages [control]="clientForm.get('telefono')"></app-error-messages>
+      </div>
+      <div class="w-full mt-6">
+        <p-floatLabel class="block w-full">
+          <input class="w-full" type="text" formControlName="direccion" pInputText />
+          <label for="direccion">Dirección (Opcional)</label>
+        </p-floatLabel>
+        <app-error-messages [control]="clientForm.get('direccion')"></app-error-messages>
+      </div>
+      <p-divider />
+      <div class="button-section mt-8 mx-2">
+        <!-- <p-button label="Cancelar" severity="secondary" (click)="closeDialog()" /> -->
+        <button pButton [disabled]="clientForm.invalid" label="Guardar" severity="secondary" [raised]="true"
+          class="login-button w-full" (click)="modalVisible = false;validateForm()"></button>
+      </div>
+    </div>
+  </form>
+</p-dialog>

@@ -1,0 +1,269 @@
+<p-toast />
+
+<div class="card">
+  <!-- Header Section -->
+  <header class="flex justify-between place-content-center mb-3">
+    <div class="flex-col">
+      <h1 class="font-bold text-2xl text-900 m-0">Colaboradores</h1>
+      <p class="text-600 text-sm m-0">Gestiona y organiza tus colaboradores</p>
+    </div>
+    <div class="order-last">
+      <p-button
+        class="flex justify-content-end flex-wrap"
+        label="Nuevo empleado"
+        variant="outlined"
+        (click)="openCreateDialog()"
+      />
+    </div>
+  </header>
+
+  <!-- Table Section -->
+  <p-table
+    [value]="empleadosList()"
+    sortField="representative.name"
+    sortMode="single"
+    [scrollable]="true"
+    scrollHeight="400px"
+    rowGroupMode="subheader"
+    groupRowsBy="representative.name"
+    [tableStyle]="{ 'min-width': '60rem' }"
+    [loading]="isLoading()"
+  >
+    <ng-template #header>
+      <tr>
+        <th></th>
+        <th>Nombre</th>
+        <th>Correo</th>
+        <th>Estado</th>
+        <th>Último ingreso</th>
+      </tr>
+    </ng-template>
+
+    <ng-template #body let-empleado>
+      <tr>
+        <td>
+          <p-menu #menu [model]="menuItems" [popup]="true" appendTo="body" />
+          <p-button
+            (click)="openMenu(menu, $event, empleado)"
+            icon="pi pi-ellipsis-v"
+            [outlined]="true"
+          />
+        </td>
+        <td>{{ empleado.nombre_completo }}</td>
+        <td>
+          <div class="flex items-center gap-2">
+            <span>{{ empleado.email }}</span>
+          </div>
+        </td>
+        <td>
+          <p-tag
+            [value]="empleado.estado"
+            [severity]="getSeverity(empleado.estado)"
+          />
+        </td>
+        <td>{{ empleado.fechaUltimoIngreso }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- Dialog Section -->
+<p-dialog
+  [(visible)]="isDialogVisible"
+  [dismissableMask]="true"
+  (onHide)="closeDialog()"
+  [breakpoints]="{ '960px': '75vw' }"
+  [style]="{ width: '37vw' }"
+  [modal]="true"
+>
+  <ng-template pTemplate="header">
+    <span class="text-400 font-semibold text-xl ml-3 md:p-1">
+      {{ dialogTitle() }}
+    </span>
+  </ng-template>
+
+  <form [formGroup]="empleadoForm">
+    <div class="col-4">
+      <!-- Form Header -->
+      <div class="mb-1 p-4 md:p-2">
+        <span class="text-surface-600 dark:text-surface-200 font-medium ml-2">
+          Registra tu colaborador de confianza
+        </span>
+      </div>
+
+      <!-- Form Fields -->
+      <div class="flex flex-col gap-8 p-4 md:p-2 mt-6 mb-3">
+        <!-- First Name Field -->
+        <div class="col-12">
+          <p-floatlabel>
+            <input
+              pInputText
+              id="first_name"
+              type="text"
+              formControlName="first_name"
+              class="w-full md:w-25rem"
+            />
+            <label for="first_name">Nombre</label>
+          </p-floatlabel>
+          <div class="ml-3">
+            <app-error-messages [control]="empleadoForm.get('first_name')" />
+          </div>
+        </div>
+
+        <!-- Last Name Field -->
+        <div class="col-12">
+          <p-floatlabel>
+            <input
+              pInputText
+              id="last_name"
+              type="text"
+              formControlName="last_name"
+              class="w-full md:w-25rem"
+            />
+            <label for="last_name">Apellido</label>
+          </p-floatlabel>
+          <div class="ml-3">
+            <app-error-messages [control]="empleadoForm.get('last_name')" />
+          </div>
+        </div>
+
+        <!-- Email Field -->
+        <div class="col-12">
+          <p-floatlabel>
+            <input
+              pInputText
+              id="email"
+              type="email"
+              formControlName="email"
+              class="w-full md:w-25rem"
+            />
+            <label for="email">Correo</label>
+          </p-floatlabel>
+          <div class="ml-3">
+            <app-error-messages [control]="empleadoForm.get('email')" />
+          </div>
+        </div>
+
+        <!-- Password Field (conditional) -->
+        @if (isPasswordVisible() || changePassword()) {
+          <div class="col-12">
+            <p-floatlabel>
+              <p-password
+                id="password"
+                formControlName="password"
+                styleClass="w-full"
+                inputStyleClass="w-full md:w-25rem"
+                [toggleMask]="true"
+              />
+              <label for="password">{{ passwordLabel() }}</label>
+            </p-floatlabel>
+            <div class="ml-3">
+              <app-error-messages [control]="empleadoForm.get('password')" />
+            </div>
+          </div>
+        }
+
+        <!-- Role Field (for update mode) -->
+        @if (!isPasswordVisible()) {
+          <div class="col-12">
+            <p-floatlabel>
+              <p-select
+                id="id_rol"
+                formControlName="id_rol"
+                [options]="roles()"
+                optionValue="id"
+                optionLabel="name"
+                class="w-full"
+              />
+              <label for="id_rol">Rol</label>
+            </p-floatlabel>
+            <div class="ml-3">
+              <app-error-messages [control]="empleadoForm.get('id_rol')" />
+            </div>
+          </div>
+
+          <!-- Password Reset Button -->
+          <div class="button-section">
+            <button
+              pButton
+              pRipple
+              type="button"
+              class="login-button-reset w-full mb-4"
+              severity="secondary"
+              (click)="enablePasswordField()"
+              icon="pi pi-sync"
+              [label]="passwordToggleLabel()"
+              variant="outlined">
+            </button>
+          </div>
+        }
+
+        <!-- Role Field (for create mode) -->
+        @if (isPasswordVisible()) {
+          <div class="col-12">
+            <p-floatlabel>
+              <p-select
+                id="id_rol_create"
+                formControlName="id_rol"
+                [options]="roles()"
+                optionValue="id"
+                optionLabel="name"
+                class="w-full"
+              />
+              <label for="id_rol_create">Rol</label>
+            </p-floatlabel>
+            <div class="ml-3">
+              <app-error-messages [control]="empleadoForm.get('id_rol')" />
+            </div>
+          </div>
+        }
+
+        <!-- Firma digital (solo para rol DOCTOR) -->
+        @if (isRolDoctor()) {
+          <div class="col-12">
+            <label class="block text-surface-600 dark:text-surface-200 font-medium mb-2 ml-2">
+              Firma digital
+            </label>
+            <p-fileupload
+              #fu
+              mode="basic"
+              [chooseLabel]="textButtonUpload()"
+              chooseIcon="pi pi-upload"
+              name="imagen"
+              accept="image/*"
+              maxFileSize="1000000"
+              (onSelect)="onFileSelect($event)"
+              [auto]="false"
+            />
+            @if (hasFileSelected()) {
+              <div class="flex items-center gap-2 mt-2 ml-2">
+                <i class="pi pi-check-circle text-green-500"></i>
+                <span class="text-sm text-surface-700">{{ selectedFileName() }}</span>
+              </div>
+            }
+            <small class="block text-surface-500 mt-2 ml-2">
+              Formatos permitidos: JPG, PNG. Tamaño máximo: 1MB
+            </small>
+          </div>
+        }
+
+      </div>
+
+      <!-- Form Actions -->
+      <p-divider />
+      <div class="button-section mt-8 mx-2">
+        <button
+          pButton
+          pRipple
+          type="button"
+          [disabled]="empleadoForm.invalid || isLoading()"
+          [label]="submitButtonLabel()"
+          severity="secondary"
+          [raised]="true"
+          class="login-button w-full"
+          (click)="submitEmpleadoForm(empleadoForm.value)">
+        </button>
+      </div>
+    </div>
+  </form>
+</p-dialog>

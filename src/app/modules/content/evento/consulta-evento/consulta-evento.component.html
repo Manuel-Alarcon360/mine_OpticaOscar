@@ -1,0 +1,308 @@
+<p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }" />
+<div class="flex flex-row w-full gap-4">
+  <div class="card flex flex-col  gap-4 w-full">
+    <div class="flex w-full flex-col md:flex-row">
+      <div class="flex w-full items-center gap-3">
+        <div>
+          <h1 class="font-bold text-2xl text-900 m-0">Eventos programados</h1>
+          <p class="text-600 text-sm m-0">Comparte la informacion importante con tus clientes.</p>
+        </div>
+      </div>
+      @if (rolUsuario == "DOCTOR") {
+      <div class="flex w-full justify-end">
+        <p-button (click)="openCrearEvento()" label="Crear Evento" icon="pi pi-calendar-plus" severity="primary" variant="outlined" />
+      </div>
+      }
+    </div>
+    <div class="flex w-full flex-wrap mt-4">
+      <p-table [value]="eventos" class="w-full" [tableStyle]="{ 'min-width': '50rem' }">
+      <ng-template #header>
+          <tr>
+              @if(rolUsuario == "DOCTOR"){<th>Acciones</th>} 
+              <th>Titulo evento</th>
+              <th>Mostrar en landing</th>
+              <th>Fecha creación</th>
+              <th>Fechas de visualizacion</th>
+          </tr>
+      </ng-template>
+      <ng-template #body let-item>
+          <tr>
+            @if(rolUsuario == "DOCTOR"){
+              <td class="flex gap-2">
+                <p-button icon="pi pi-trash" severity="secondary" (click)="confirm(item.id)" [rounded]="true" pTooltip="Eliminar Evento" /> <!-- (click)="confirm(item.id)"  --> 
+                <p-button icon="pi pi-file-edit" (click)="updateEvento(item.id)" severity="secondary" [rounded]="true" pTooltip="Visualizar Evento" tooltipPosition="left" />
+              </td>  <!-- (click)="navigate('formulario/editar', item.id)" --> 
+            }
+              <td>{{ item.titulo }}</td>
+              <td>
+                <!-- {{ item.mostrar_en_landing ? 'Si' : 'No' }} -->
+                    <div class="flex justify-center">
+                        <p-toggleswitch
+                            [(ngModel)]="item.mostrar_en_landing"
+                            [disabled]="item.cambiandoSwitch"
+                            (onChange)="cambiarMostrarEnLanding(item)"/>
+                    </div>
+              </td>
+              <td>{{ item.fecha_creacion }}</td>
+              <td>
+                {{ item.fecha_inicio}} <span class="font-semibold">/</span> {{item.fecha_fin}}
+                <!-- <div class="flex flex-col">
+                    <span>{{ item.fecha_inicio}} </span>
+                    <span>{{item.fecha_fin}}</span>
+                </div> -->
+               </td>
+          </tr>
+      </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+
+<p-confirmdialog #cd>
+  <ng-template #headless let-message let-onAccept="onAccept" let-onReject="onReject">
+    <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
+      <div
+        class="rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
+        <i class="pi pi-trash !text-5xl"></i>
+      </div>
+      <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
+      <p class="mb-0">{{ message.message }}</p>
+      <div class="flex gap-2 mt-6 w-full">
+        <p-button class="flex-1" label="Cancelar" [outlined]="true" (onClick)="onReject()" styleClass="w-64"></p-button>
+        <p-button class="flex-1" label="Eliminar" (onClick)="onAccept()" styleClass="w-64"></p-button>
+      </div>
+    </div>
+  </ng-template>
+</p-confirmdialog>
+
+<div class="flex justify-center">
+    <p-dialog [dismissableMask]="true"  (onHide)="closeDialog()"  [header]="editEvent ? 'Actualizar evento ':  'Registrar evento'" [modal]="true" [(visible)]="visibleDialog" [style]="{ width: '50rem' }"[breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" >
+        <form [formGroup]="eventoForm">
+        <div class="grid grid-cols-2 gap-4 mt-5 pt-6">
+            <div class="col-span-2 mt-3">
+                <p-floatLabel>
+                    <input id="username" pInputText class="w-full" formControlName="titulo"/>
+                    <label for="username">Titulo del evento</label>
+                </p-floatLabel>
+                <app-error-messages [control]="eventoForm.get('titulo')" class="error-message"></app-error-messages>
+            </div>
+            <div class="col-span-2 mt-3">
+                <p-floatlabel class="w-full">
+                    <p-select class="w-full p-fluid" id="tipoEventos" formControlName="tipo_evento" [options]="tipoEventos"  inputId="over_label"   optionLabel="label" styleClass="w-full" />
+                    <label for="tipoEventos">Tipo de evento</label>
+                </p-floatlabel>
+                <app-error-messages [control]="eventoForm.get('tipo_evento')" class="error-message"></app-error-messages>
+            </div>
+            <div class="col-span-2">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="w-full">
+                        <label class="block mb-1"> Fecha inicio de visualización </label>
+                        <p-datepicker appendTo="body" class="w-full" formControlName="fecha_inicio" styleClass="w-full" [iconDisplay]="'input'" [showIcon]="true"></p-datepicker>
+                        <app-error-messages [control]="eventoForm.get('fecha_inicio')" class="error-message"></app-error-messages>
+
+                    </div>
+                    <div class="w-full"> 
+                        <label class="block mb-1"> Fecha fin de visualización </label>
+                        <p-datepicker appendTo="body"class="w-full" formControlName="fecha_fin" styleClass="w-full" [iconDisplay]="'input'"[showIcon]="true"></p-datepicker>
+                        <app-error-messages [control]="eventoForm.get('fecha_fin')" class="error-message"></app-error-messages>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-span-2 ... mt-3">
+                <p-floatlabel>
+                    <textarea pTextarea id="over_label" formControlName="descripcion" rows="2" cols="30" style="resize: none" class="h-full w-full"></textarea>
+                    <label for="over_label">Descripcion del evento.</label>
+                </p-floatlabel>
+                <app-error-messages [control]="eventoForm.get('descripcion')" class="error-message"></app-error-messages>
+
+            </div>
+
+            @if ((this.eventoForm.value.id)&&(!addImage) ) {
+                    <div class=" col-span-2 w-full flex justify-center md:justify-end">
+                        <button pButton pRipple class="w-full" icon="pi pi-file-edit"  (click)="changeImage()" severity="secondary" label="Agregar o cambiar imagen" [rounded]="true" pTooltip="Cambiar imagen" tooltipPosition="left"></button>
+                    </div>
+                    @if (this.eventoForm.value.imagen_evento) {
+                            <div class="flex justify-center pt-4">
+                                <img
+                                [src]="this.eventoForm.value.imagen_evento"
+                                alt="Imagen del evento"
+                                class="w-70 h-70 object-cover rounded-lg shadow-md"
+                                />
+                            </div>
+                    }@else {
+                        <div class="col-span-2 flex flex-col items-center justify-center text-center gap-2">
+                            <i class="pi pi-image " style="font-size: 1.5rem"></i>
+                            <span>Evento sin imagen</span>
+                        </div>
+                    }
+            }
+            @if (addImage) {
+                <div class="col-span-2 ">
+                <p-fileupload name="myfile[]" url="https://www.primefaces.org/cdn/api/upload.php" [multiple]="false" accept="image/*" maxFileSize="1000000"  (onSelect)="onSelectedFiles($event)">
+                    <ng-template #header let-files let-chooseCallback="chooseCallback" let-clearCallback="clearCallback" let-uploadCallback="uploadCallback">
+                        <div class="flex items-center w-full gap-4">
+                                <div class="flex-shrink-0">
+                                <p-button (onClick)="choose($event, chooseCallback)" icon="pi pi-images" [rounded]="true" [outlined]="true"/>
+                                </div>
+                                <div class="flex-1">
+                                <p-progressbar [value]="progress" [showValue]="true" class="w-full" styleClass="h-1">
+                                    <span class="whitespace-nowrap">
+                                    {{ totalSize }}B / 1Mb
+                                    </span>
+                                </p-progressbar>
+                                </div>
+                        </div>
+                    </ng-template>
+                    <ng-template #content let-files let-uploadedFiles="uploadedFiles" let-removeFileCallback="removeFileCallback" let-removeUploadedFileCallback="removeUploadedFileCallback">
+                        <div class="flex flex-col gap-8 pt-4">
+                            <div *ngIf="files?.length > 0">
+                                <h5>Pending</h5>
+                                <div class="flex flex-wrap gap-4">
+                                    <div *ngFor="let file of files; let i = index" class="p-8 rounded-border flex flex-col border border-surface items-center gap-4">
+                                        <div>
+                                            <img role="presentation" [alt]="file.name" [src]="file.objectURL" width="100" height="50" />
+                                        </div>
+                                        <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name }}</span>
+                                        <div>{{ formatSize(file.size) }}</div>
+                                        <p-badge value="Pending" severity="warn" />
+                                        <p-button icon="pi pi-times" (click)="onRemoveTemplatingFile($event, file, removeFileCallback, i)" [outlined]="true" [rounded]="true" severity="danger" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="uploadedFiles?.length > 0">
+                                <h5>Completed</h5>
+                                <div class="flex flex-wrap gap-4">
+                                    <div *ngFor="let file of uploadedFiles; let i = index" class="card m-0 px-12 flex flex-col border border-surface items-center gap-4">
+                                        <div>
+                                            <img role="presentation" [alt]="file.name" [src]="file.objectURL" width="100" height="50" />
+                                        </div>
+                                        <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name }}</span>
+                                        <div>{{ formatSize(file.size) }}</div>
+                                        <p-badge value="Completed" class="mt-4" severity="success" />
+                                        <p-button icon="pi pi-times" (onClick)="removeUploadedFileCallback(i)" [outlined]="true" [rounded]="true" severity="danger" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template #file></ng-template>
+                    <ng-template #empty>
+                        <div class="flex items-center justify-center flex-col">
+                            <i class="pi pi-cloud-upload !border-2 !rounded-full !p-8 !text-4xl !text-muted-color"></i>
+                            <p class="mt-6 mb-0">Pica el boton para seleccionar la imagen o arrastrala para subirla</p>
+                        </div>
+                    </ng-template>
+                </p-fileupload>
+                </div>
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- <span class="col-span-2 ">Selecciona la imagen de tu evento. (No es obligatoria)</span>
+            <div class="col-span-2 ">
+                @if (editEvent) {
+                      <p-button 
+                        icon="pi pi-file-edit" 
+                        (click)="changeImage()" 
+                        severity="secondary" 
+                        label="Cambiar imagen"
+                        [rounded]="true" 
+                        pTooltip="Cambiar imagen" 
+                        tooltipPosition="left" 
+                    />
+
+                    <div class="flex justify-center pt-4">
+                        <img
+                        [src]="this.eventoForm.value.imagen_evento"
+                        alt="Imagen del evento"
+                        class="w-70 h-70 object-cover rounded-lg shadow-md"
+                        />
+                    </div>
+                } @else {
+                <p-fileupload name="myfile[]" url="https://www.primefaces.org/cdn/api/upload.php" [multiple]="false" accept="image/*" maxFileSize="1000000"  (onSelect)="onSelectedFiles($event)">
+                    <ng-template #header let-files let-chooseCallback="chooseCallback" let-clearCallback="clearCallback" let-uploadCallback="uploadCallback">
+                        <div class="flex items-center w-full gap-4">
+                                <div class="flex-shrink-0">
+                                <p-button (onClick)="choose($event, chooseCallback)" icon="pi pi-images" [rounded]="true" [outlined]="true"/>
+                                </div>
+                                <div class="flex-1">
+                                <p-progressbar [value]="progress" [showValue]="true" class="w-full" styleClass="h-1">
+                                    <span class="whitespace-nowrap">
+                                    {{ totalSize }}B / 1Mb
+                                    </span>
+                                </p-progressbar>
+                                </div>
+                        </div>
+                    </ng-template>
+                    <ng-template #content let-files let-uploadedFiles="uploadedFiles" let-removeFileCallback="removeFileCallback" let-removeUploadedFileCallback="removeUploadedFileCallback">
+                        <div class="flex flex-col gap-8 pt-4">
+                            <div *ngIf="files?.length > 0">
+                                <h5>Pending</h5>
+                                <div class="flex flex-wrap gap-4">
+                                    <div *ngFor="let file of files; let i = index" class="p-8 rounded-border flex flex-col border border-surface items-center gap-4">
+                                        <div>
+                                            <img role="presentation" [alt]="file.name" [src]="file.objectURL" width="100" height="50" />
+                                        </div>
+                                        <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name }}</span>
+                                        <div>{{ formatSize(file.size) }}</div>
+                                        <p-badge value="Pending" severity="warn" />
+                                        <p-button icon="pi pi-times" (click)="onRemoveTemplatingFile($event, file, removeFileCallback, i)" [outlined]="true" [rounded]="true" severity="danger" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="uploadedFiles?.length > 0">
+                                <h5>Completed</h5>
+                                <div class="flex flex-wrap gap-4">
+                                    <div *ngFor="let file of uploadedFiles; let i = index" class="card m-0 px-12 flex flex-col border border-surface items-center gap-4">
+                                        <div>
+                                            <img role="presentation" [alt]="file.name" [src]="file.objectURL" width="100" height="50" />
+                                        </div>
+                                        <span class="font-semibold text-ellipsis max-w-60 whitespace-nowrap overflow-hidden">{{ file.name }}</span>
+                                        <div>{{ formatSize(file.size) }}</div>
+                                        <p-badge value="Completed" class="mt-4" severity="success" />
+                                        <p-button icon="pi pi-times" (onClick)="removeUploadedFileCallback(i)" [outlined]="true" [rounded]="true" severity="danger" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template #file></ng-template>
+                    <ng-template #empty>
+                        <div class="flex items-center justify-center flex-col">
+                            <i class="pi pi-cloud-upload !border-2 !rounded-full !p-8 !text-4xl !text-muted-color"></i>
+                            <p class="mt-6 mb-0">Pica el boton para seleccionar la imagen o arrastrala para subirla</p>
+                        </div>
+                    </ng-template>
+                </p-fileupload>
+            }
+            </div> -->
+            <div class="col-span-2 w-full MT-3">
+                <p-button [label]='editEvent ? "Actualizar" : "Guardar evento"' icon="pi pi-send" [disabled]="eventoForm.invalid" class="w-full" styleClass="w-full"(click)="saveForm()"></p-button>
+            </div>
+        </div>
+        </form>
+    </p-dialog>
+</div>
+<!-- <p-toast /> -->

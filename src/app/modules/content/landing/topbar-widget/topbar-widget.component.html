@@ -1,0 +1,63 @@
+   <div class="flex items-center justify-between relative lg:static py-12 px-6 mx-0 md:px-16 lg:px-20 lg:py-12 lg:mx-20">
+            <a class="cursor-pointer flex-shrink-0" (click)="router.navigate(['/landing'])">
+            <img
+                src="../../../../../assets/img/logo_1.png"
+                alt="Logo"
+                class="h-20 sm:h-24 md:h-24 lg:h-28 xl:h-30 w-auto object-contain"
+            />
+            </a>
+            
+            <i pStyleClass="@next" enterFromClass="hidden" leaveToClass="hidden" [hideOnOutsideClick]="true" class="pi pi-bars !text-4xl cursor-pointer block md:hidden text-surface-700 dark:text-surface-100"></i>
+
+            <div
+                id="menu"
+                class="list-wrapper items-center flex-grow-1 hidden md:flex absolute md:static w-full md:px-0 z-30 shadow md:shadow-none animate-fadein bg-surface-100 dark:bg-surface-700 md:bg-transparent md:dark:bg-transparent"
+                [style]="{ top: '80px', right: '0%' }"
+            >
+                <ul class="list-none p-4 md:p-0 m-0 ml-auto flex md:items-center select-none text-xl flex-col md:flex-row cursor-pointer">
+                    <a pRipple class="cursor-pointer block md:hidden text-700 text-primary absolute z-[5] ms-auto" style="top:1.5rem" pStyleClass="@grandparent" enterFromClass="hidden" leaveToClass="hidden">
+                        <i class="pi pi-times !text-3xl"></i>
+                    </a>
+                    <li>
+                        <a (click)="setSection('principal')" pStyleClass="#menu" enterFromClass="hidden" leaveToClass="hidden" pRipple class="flex m-0 md:ml-8 px-0 py-4 text-surface-900 dark:text-surface-0  leading-normal"
+                        [ngClass]="{'font-bold text-primary shadow-4 border-bottom-2 border-primary': activeSeccion() === 'principal'}">
+                            <span>Principal</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a (click)="setSection('tienda')" pRipple pStyleClass="#menu" enterFromClass="hidden" leaveToClass="hidden" class="flex m-0 md:ml-8 px-0 py-4 text-surface-900 dark:text-surface-0 text-xl leading-normal"
+                        [ngClass]="{'font-bold text-primary border-bottom-2 border-primary': activeSeccion() === 'tienda'}">
+                            <span>Servicios</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a (click)="setSection('servicios')" pRipple pStyleClass="#menu" enterFromClass="hidden" leaveToClass="hidden" class="flex m-0 md:ml-8 px-0 py-4 text-surface-900 dark:text-surface-0  leading-normal"
+                        [ngClass]="{'font-bold text-primary border-bottom-2 border-primary': activeSeccion() === 'servicios'}">
+                            <span>Lentes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a  (click)="setSection('clientes')"  pStyleClass="#menu" enterFromClass="hidden" leaveToClass="hidden" pRipple class="flex m-0 md:ml-8 px-0 py-4 text-surface-900 dark:text-surface-0  leading-normal"
+                        [ngClass]="{'font-bold text-primary border-bottom-2 border-primary': activeSeccion() === 'clientes'}">
+                            <span>Clientes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a (click)="setSection('eventos')" pStyleClass="#menu" enterFromClass="hidden" leaveToClass="hidden" pRipple class="flex m-0 md:ml-8 px-0 py-4 text-surface-900 dark:text-surface-0  leading-normal"
+                        [ngClass]="{'font-bold text-primary border-bottom-2 border-primary': activeSeccion() === 'eventos'}">
+                            <span>Eventos</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a (click)="setSection('nosotros')" pStyleClass="#menu" enterFromClass="hidden" leaveToClass="hidden" pRipple class="flex m-0 md:ml-8 px-0 py-4 text-surface-900 dark:text-surface-0  leading-normal"
+                        [ngClass]="{'font-bold text-primary border-bottom-2 border-primary': activeSeccion() === 'nosotros'}">
+                            <span>Nosotros</span>
+                        </a>
+                    </li>
+
+                    <li class="flex align-items-center">
+                        <button pButton pRipple type="button" [routerLink]="['/auth/login']" label="Ingreso Doctor" class="m-0 mt-4 md:mt-0 md:ml-8"></button>
+                    </li>
+                </ul>
+            </div>
+        </div>

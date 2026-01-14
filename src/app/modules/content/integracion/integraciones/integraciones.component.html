@@ -1,0 +1,88 @@
+<p-toast></p-toast>
+    <div class="card">
+            <div class="flex justify-between place-content-center mb-3 ">
+                <div class="flex flex-col text-center md:text-left">
+                        <h1 class="font-bold text-2xl text-900 m-0">Integraciones</h1>
+                    <p class="text-600 text-sm m-0">Gestiona los tokens de tus integraciones</p>
+                </div>
+                <div class="order-last">
+                    <p-button class="flex justify-content-end flex-wrap" variant="outlined" label="Nueva aplicación" (click)="this.dialogVisible = true"/>
+                </div>
+            </div>
+
+            <div class="col-span-12">
+                <ng-container >
+                    <div class="card p-1  flex flex-col lg:flex-row justify-between items-center "style="margin: 7px 0;" *ngFor="let aplicacion of aplicaciones; let i = index">
+                        <div class="flex flex-col lg:flex-row justify-center items-center px-2">
+                            <div class="flex flex-col my-auto text-center md:text-left">
+                                <span class="text-surface-900 font-semibold text-xl dark:text-surface-0 font-medium mb-4 mt-4 lg:mt-0">{{ aplicacion.nombre_aplicacion }}</span>
+                                <span class="text-surface-900 dark:text-surface-0 font-medium mb-4 mt-4 lg:mt-0">Token</span>
+                                <span class="text-surface-700 dark:text-surface-100 text-sm mb-4 break-all">{{ aplicacion.token_aplicacion }}</span>
+                                <div class="flex gap-2 mt-6 w-full lg:justify-start justify-center">
+                                    <div class="">
+                                        <p-button
+                                            icon="pi pi-sync" label="Actualizar token"  variant="outlined" severity="info" (click)="openUpdateAppDialog(aplicacion)"
+                                            [style]="{'border-width': '1px', 'border-radius': '6px', 'border-color': '#0284c7'}" />
+                                    </div>
+                                    <div class="ml-3">
+                                        <p-button
+                                            icon="pi pi-times" label="Borrar integración"  variant="outlined" severity="danger" (click)="confirm(aplicacion)"
+                                            [style]="{'border-width': '1px', 'border-radius': '6px', 'border-color': '#dc2626'}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+    </div>
+    <p-dialog
+            [(visible)]="dialogVisible" [modal]="true" [dismissableMask]="true" (onHide)="closeDialog()" [breakpoints]="{ '960px': '75vw' }"
+            [style]="{ width: '37vw'}"styleClass="mx-4 sm:mx-0 sm:w-full md:w-8/12 lg:w-6/12"
+            contentStyleClass="rounded-b border-t border-surface-200 dark:border-surface-700 p-0">
+        <ng-template pTemplate="header">
+                <span class="text-400 font-semibold tamaño text-xl ml-3 md:p-1"> {{this.updateApp ? 'Actualizar aplicación' : 'Crear nueva aplicación'}}</span>
+        </ng-template>
+        <div class="p-6">
+            <form [formGroup]="aplicacionForm">
+                <p-fluid class="flex flex-col gap-6 p-4 md:p-2 mt-2 mb-3">
+                    <div class="col-12 mb-4">
+                        <p-floatlabel>
+                            <input pInputText id="Nombre" type="text" formControlName="nombre_aplicacion" placeholder=" " class="w-full md:w-25rem" />
+                            <label for="Nombre">Nombre de la aplicacion</label>
+                        </p-floatlabel>
+                        <div class="ml-3 "><app-error-messages [control]="aplicacionForm.get('nombre_aplicacion')"></app-error-messages></div>
+                    </div>
+                    <div class="col-12">
+                        <p-floatlabel>
+                            <input pInputText id="Nombre" type="text" formControlName="token_aplicacion" placeholder=" " class="w-full md:w-25rem" />
+                            <label for="Nombre">Token aplicación</label>
+                        </p-floatlabel>
+                        <div class="ml-3 "><app-error-messages [control]="aplicacionForm.get('token_aplicacion')"></app-error-messages></div>
+                    </div>
+                    <div class="col-span-12 flex justify-end mt-6">
+                        <button pButton pRipple class="w-32" [disabled]="aplicacionForm.invalid"  icon="pi pi-check" [label]="updateApp ? ' Actualizar' : 'Guardar'" (click)="saveAplicacion(this.aplicacionForm)"></button>
+                    </div>
+                </p-fluid>
+            </form>
+        </div>
+    </p-dialog>
+<!-- <div class="card flex justify-center"> -->
+    <p-confirmdialog #cd>
+        <ng-template #headless let-message let-onAccept="onAccept" let-onReject="onReject">
+            <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
+                <div
+                    class="rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20"
+                >
+                    <i class="pi pi-trash !text-5xl"></i>
+                </div>
+                <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
+                <p class="mb-0">{{ message.message }}</p>
+                <div class="flex gap-2 mt-6 w-full">
+                    <p-button class="flex-1" label="Cancelar" [outlined]="true" (onClick)="onReject()" styleClass="w-64"></p-button>
+                    <p-button class="flex-1" label="Eliminar" (onClick)="onAccept()" styleClass="w-64"></p-button>
+                </div>
+            </div>
+        </ng-template>
+    </p-confirmdialog>
+<!-- </div> -->

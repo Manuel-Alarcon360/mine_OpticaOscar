@@ -1,0 +1,27 @@
+<div class="grid mb-4">
+  <div class="col-12">
+    <div class="flex flex-col lg:flex-row align-items-start align-center justify-content-between gap-4">
+
+      <div class="flex flex-col align-items-start flex-1">
+        <div class="my-2">
+          <span class="text-900 font-bold text-4xl">¡Bienvenido/a !</span>
+        </div>
+        <p class="text-600 m-0">Estas son las citas para esta semana, si quieres ver más detalles, haz clic sobre DoCalendar</p>
+      </div>
+      <div class="w-fit">
+        <div class="card-dashboard" (click)="openNewWindow()">
+          <div class="flex flex-col">
+            <b class="align-self-center">
+              <span class="text-dashboard-one">DoCalendar</span>
+            </b>
+            <span class="text-dashboard">Ingresar a DoCalendar</span>
+          </div>
+          <div>
+            <img class="ml-7 w-10" src="assets/img/Logo-DoCalendar-07.png" style="scale:3" alt="DoCalendar">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-citas-listado></app-citas-listado>

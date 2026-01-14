@@ -1,0 +1,81 @@
+     
+      <div
+            id="home"
+            class="grid grid-cols-12 gap-4 grid-nogutter justify-between items-center mb-12 py-12 md:mb-20 md:py-20"
+        >
+            <div
+                class="col-span-12 md:col-span-4 flex flex-col gap-6 order-1 md:order-none items-center md:items-start text-center md:text-left"
+            >
+                <span
+                    class="block text-surface-900 dark:text-surface-0 font-bold text-4xl"
+                    > Tu visión, nuestro compromiso</span
+                >
+                <span
+                    class="block text-surface-700 dark:text-surface-100 text-lg"
+                    >En nuestra óptica encuentras los mejores lentes, monturas y servicios visuales
+            con tecnología de vanguardia para cuidar tu salud ocular.</span
+                >
+                <ul class="flex flex-wrap gap-8 list-none p-0">
+                    <li class="flex items-center">
+                        <div
+                            class="p-1 rounded-full bg-green-400 inline-block mr-2"
+                        ></div>
+                        <span
+                            class="text-surface-900 dark:text-surface-0 font-semibold"
+                            >Lentes oftálmicos</span
+                        >
+                    </li>
+                    <li class="flex items-center">
+                        <div
+                            class="p-1 rounded-full bg-green-400 inline-block mr-2"
+                        ></div>
+                        <span
+                            class="text-surface-900 dark:text-surface-0 font-semibold"
+                            >Exámenes visuales</span
+                        >
+                    </li>
+                    <li class="flex items-center">
+                        <div
+                            class="p-1 rounded-full bg-green-400 inline-block mr-2"
+                        ></div>
+                        <span
+                            class="text-surface-900 dark:text-surface-0 font-semibold"
+                            >Monturas de moda</span
+                        >
+                    </li>
+                </ul>
+                <button
+                    pButton
+                    pRipple
+                    type="button"
+                    label="Agenda tu cita"
+                    icon="pi pi-arrow-right"
+                    iconPos="right"
+                    (click)="agendarCita()"
+                    class="w-48"
+                    outlined
+                ></button>
+            </div>
+
+            <div
+                class="col-span-12 md:col-span-7 order-none md:order-1 mb-12 md:mb-0 rounded"
+            >
+                <img
+                    animateEnter="moveinright"
+                    src="assets/img/optometria.jpg"
+                    alt=""
+                    class="w-full h-full rounded shadow animate-duration-1000 animate-fadeinright"
+                />
+            </div>
+        </div>
+        <p-toast position="top-right">
+            <ng-template let-message pTemplate="message">
+                <div class="">
+                    <strong>{{ message.summary }}</strong>
+                    <p class="mb-2">¡Ups! Parece que algo salió mal. Te invitamos a continuar desde: </p>
+                    <a href="https://docalendar.com.co/landing/client/Oscar_Gomez" target="_blank" >
+                    https://docalendar.com.co/landing/client/Oscar_Gomez
+                    </a>
+                </div>
+            </ng-template>
+        </p-toast>

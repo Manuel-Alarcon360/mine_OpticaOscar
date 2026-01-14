@@ -1,0 +1,16 @@
+            <p-carousel [value]="products" [numVisible]="2" [numScroll]="2" [circular]="false" [responsiveOptions]="carouselResponsiveOptions">
+                <ng-template let-product #item>
+                    <div class="border border-surface rounded-border m-2 p-6">
+                        <div class="mb-6">
+                            <div class="relative mx-auto">
+                                <img src="assets/img/{{ product.image }}" [alt]="product.name" class="w-full rounded-border" />
+                                <div class="absolute bg-black/70 rounded-border" [ngStyle]="{ 'left.px': 5, 'top.px': 5 }">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-6 font-medium">{{ product.name }}</div>
+                        <div class="flex justify-between items-center">
+                        </div>
+                    </div>
+                </ng-template>
+            </p-carousel>

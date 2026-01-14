@@ -1,0 +1,66 @@
+<p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }" />
+<div class="flex flex-row w-full gap-4">
+  <div class="card flex flex-col  gap-4 w-full">
+    <div class="flex w-full flex-col md:flex-row">
+      <div class="flex w-full items-center gap-3">
+        <div>
+          <h1 class="font-bold text-2xl text-900 m-0">Formularios</h1>
+          <p class="text-600 text-sm m-0">Gestiona y organiza tus formularios</p>
+        </div>
+      </div>
+      @if (rolUsuario == "DOCTOR") {
+      <div class="flex w-full justify-end">
+        <p-button (click)="navigate('formulario/crear')" label="Crear Formulario" icon="pi pi-external-link" severity="primary" variant="outlined" />
+      </div>
+      }
+    </div>
+
+
+    <div class="flex w-full flex-wrap mt-4">
+      <p-table [value]="this.listadoFormularios()" class="w-full" [tableStyle]="{ 'min-width': '50rem' }">
+      <ng-template #header>
+          <tr>
+              @if(rolUsuario == "DOCTOR"){<th>Acciones</th>} 
+              <th>Nombre de Formulario</th>
+              <th>Principal</th>
+              <th>Fecha creación</th>
+              <th>Fecha Actualización</th>
+          </tr>
+      </ng-template>
+      <ng-template #body let-item>
+          <tr>
+            @if(rolUsuario == "DOCTOR"){
+              <td class="flex gap-2">
+                <p-button icon="pi pi-trash" (click)="confirm(item.id)" severity="secondary" [rounded]="true" pTooltip="Eliminar Formulario" />
+                <p-button icon="pi pi-external-link" (click)="navigate('formulario/editar', item.id)" severity="secondary" [rounded]="true" pTooltip="Visualizar Formulario" tooltipPosition="left" />
+              </td>
+            }
+              <td>{{ item.nombre_formulario }}</td>
+              <td>{{ item.principal ? 'Si' : 'No' }}</td>
+              <td>{{ item.fecha_creacion }}</td>
+              <td>{{ item.fecha_actualizacion }}</td>
+
+          </tr>
+      </ng-template>
+      </p-table>
+    </div>
+  </div>
+
+</div>
+
+<p-confirmdialog #cd>
+  <ng-template #headless let-message let-onAccept="onAccept" let-onReject="onReject">
+    <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
+      <div
+        class="rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
+        <i class="pi pi-trash !text-5xl"></i>
+      </div>
+      <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
+      <p class="mb-0">{{ message.message }}</p>
+      <div class="flex gap-2 mt-6 w-full">
+        <p-button class="flex-1" label="Cancelar" [outlined]="true" (onClick)="onReject()" styleClass="w-64"></p-button>
+        <p-button class="flex-1" label="Eliminar" (onClick)="onAccept()" styleClass="w-64"></p-button>
+      </div>
+    </div>
+  </ng-template>
+</p-confirmdialog>

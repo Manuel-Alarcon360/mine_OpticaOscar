@@ -1,0 +1,378 @@
+<p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }" />
+<div class="flex flex-row w-full gap-4">
+  <div class="card flex flex-col gap-4 main-content"
+       [ngClass]="showSidePanel ? 'collapsed' : 'expanded'">
+    <div class="font-bold  text-2xl">Editar Formulario</div>
+    <div class="flex flex-col md:flex-row gap-4 mt-4">
+      <form [formGroup]="formNombre" class="w-full">
+        <div class="flex flex-wrap gap-2 w-full md:w-full mb-7">
+          <p-floatlabel class="w-full">
+            <p-select [options]="listOptionsInputMain" formControlName="principal" class="w-full"></p-select>
+            <label for="nombre_formulario">¿Este formulario es el principal?</label>
+          </p-floatlabel>
+          <app-error-messages [control]="formNombre.get('principal')" class="error-message"></app-error-messages>
+        </div>
+        <div class="flex flex-wrap gap-2 w-full md:w-full">
+          <p-floatlabel class="w-full">
+            <input id="nombre_formulario" pInputText class="w-full" formControlName="nombre_formulario" />
+            <label for="nombre_formulario">Nombre Formulario</label>
+          </p-floatlabel>
+          <app-error-messages [control]="formNombre.get('nombre_formulario')" class="error-message"></app-error-messages>
+        </div>
+      </form>
+    </div>
+    <div class="mt-5 font-semibold text-xl">Encabezado (No editable)</div>
+    <div class="flex flex-col md:flex-row gap-4 mt-2">
+      <div class="flex flex-wrap gap-2 w-full md:w-96">
+        <p-floatlabel class="w-full">
+          <input id="nombre_completo" pInputText [disabled]="true" class="w-full" />
+          <label for="nombre_completo">Nombre completo</label>
+        </p-floatlabel>
+      </div>
+      <div class="flex flex-wrap gap-2 w-full md:w-96">
+        <p-floatlabel class="w-full">
+          <input id="fecha_nacimiento" pInputText [disabled]="true" class="w-full" />
+          <label for="fecha_nacimiento">Fecha nacimiento</label>
+        </p-floatlabel>
+      </div>
+      <div class="flex flex-wrap gap-2 w-full md:w-1/3">
+          <p-floatlabel class="w-full">
+            <input id="edad" pInputText [disabled]="true" class="w-full" />
+            <label for="edad">Edad</label>
+          </p-floatlabel>
+        </div>
+    </div>
+      <div class="flex flex-col md:flex-row gap-4 mt-2">
+        <div class="flex flex-wrap gap-2 w-full md:w-52">
+          <p-floatlabel class="w-full">
+            <input id="estado_civil" pInputText [disabled]="true" class="w-full" />
+            <label for="estado_civil">Estado civil</label>
+          </p-floatlabel>
+        </div>
+        <div class="flex flex-wrap gap-2 w-full">
+          <p-floatlabel class="w-full">
+            <input id="eps" pInputText [disabled]="true" class="w-full" />
+            <label for="eps">EPS</label>
+          </p-floatlabel>
+        </div>
+        <div class="flex flex-wrap gap-2 w-full md:w-56">
+          <p-floatlabel class="w-full">
+            <input id="vinculacion" pInputText [disabled]="true" class="w-full" />
+            <label for="vinculacion">vinculación</label>
+          </p-floatlabel>
+        </div>
+      </div>
+      <div class="flex flex-col md:flex-row gap-4 mt-2">
+        <div class="flex flex-wrap gap-2 w-full">
+          <p-floatlabel class="w-full">
+            <input id="direccion" pInputText [disabled]="true" class="w-full" />
+            <label for="direccion">Dirección</label>
+          </p-floatlabel>
+        </div>
+        <div class="flex flex-wrap gap-2 w-full">
+          <p-floatlabel class="w-full">
+            <input id="telefono" pInputText [disabled]="true" class="w-full" />
+            <label for="telefono">Teléfono</label>
+          </p-floatlabel>
+        </div>
+        <div class="flex flex-wrap gap-2 w-full">
+          <p-floatlabel class="w-full">
+            <input id="ocupacion" pInputText [disabled]="true" class="w-full" />
+            <label for="ocupacion">Ocupación</label>
+          </p-floatlabel>
+        </div>
+      </div>
+      <div class="flex flex-col md:flex-row gap-4 mt-2">
+        <div class="flex flex-wrap gap-2 w-full">
+          <p-floatlabel class="w-full">
+            <input id="direccion" pInputText [disabled]="true" class="w-full" />
+            <label for="direccion">Responsable</label>
+          </p-floatlabel>
+        </div>
+        <div class="flex flex-wrap gap-2 w-full">
+          <p-floatlabel class="w-full">
+            <input id="telefono" pInputText [disabled]="true" class="w-full" />
+            <label for="telefono">Teléfono responsable</label>
+          </p-floatlabel>
+        </div>
+      </div>
+
+       <div class="flex flex-col md:flex-row gap-4 mt-2">
+          <p-floatlabel class="w-full">
+          <textarea  pTextarea [disabled]="true"  class="w-full" rows="3"></textarea>
+          <label>Motivo consulta</label>
+          </p-floatlabel>
+       </div>
+    <p-divider />
+
+    <div class="font-semibold text-xl">Cuerpo</div>
+
+    <!-- Sección de campos dinámicos -->
+
+  @if (camposDinamicos.length > 0) {
+    <div class="flex flex-col md:flex-row gap-4 mt-4 flex-wrap">
+      @for (campo of camposDinamicos; track $index) {
+        @let tipo = campo.tipo;
+        <div class="flex mt-3 flex-wrap gap-2 w-full md:w-auto md:flex-1"  [ngClass]="tipo == 'Agregar área de texto' ? 'md:min-w-full' :  'md:min-w-60' " >
+          @switch (campo.tipo) {
+            @case ('Agregar campo de texto') {
+              <p-inputgroup>
+                <p-floatlabel class="w-full">
+                  <input [id]="campo.id" pInputText class="w-full" />
+                  <label [for]="campo.id">{{ campo.nombre_campo }}</label>
+                </p-floatlabel>
+                <p-inputgroup-addon>
+                  <p-button icon="pi pi-pencil" pTooltip="Editar campo" severity="secondary" variant="text" (click)="edicionCampo(campo, 'Editar campo de texto')" />
+                </p-inputgroup-addon>
+              </p-inputgroup>
+              @if (campo.requerido) {
+                <span  class="text-xs text-red-500 w-full">Este campo va a ser obligatorio</span>
+              }@else {
+                <span class="text-xs text-gray-500 w-full">Sin validación</span>
+              }
+            }
+            @case ('Agregar área de texto') {
+              <p-inputgroup>
+                <p-floatlabel class="w-full">
+                  <textarea [id]="campo.id" pTextarea  class="w-full" rows="3"></textarea>
+                  <label [for]="campo.id">{{ campo.nombre_campo }}</label>
+                </p-floatlabel>
+                <p-inputgroup-addon>
+                  <p-button icon="pi pi-pencil" pTooltip="Editar campo" severity="secondary" variant="text" (click)="edicionCampo(campo, 'Editar área de texto')"/>
+                </p-inputgroup-addon>
+              </p-inputgroup>
+
+              @if (campo.requerido) {
+                <span  class="text-xs text-red-500 w-full">Este campo va a ser obligatorio</span>
+              }@else {
+                <span class="text-xs text-gray-500 w-full">Sin validación</span>
+              }
+            }
+            @case ('Agregar campo numérico') {
+              <p-inputgroup>
+                <p-floatlabel class="w-full">
+                  <p-inputnumber [inputId]="campo.id"  class="w-full"></p-inputnumber>
+                  <label [for]="campo.id">{{ campo.nombre_campo }}</label>
+                </p-floatlabel>
+                <p-inputgroup-addon>
+                  <p-button icon="pi pi-pencil" pTooltip="Editar campo" severity="secondary" variant="text" (click)="edicionCampo(campo, 'Editar campo numérico')" />
+                </p-inputgroup-addon>
+              </p-inputgroup>
+              @if (campo.requerido) {
+                <span  class="text-xs text-red-500 w-full">Este campo va a ser obligatorio</span>
+              }@else {
+                <span class="text-xs text-gray-500 w-full">Sin validación</span>
+              }
+            }
+            @case ('Agregar lista desplegable') {
+              <p-inputgroup>
+              <p-floatlabel class="w-full">
+                <p-select [inputId]="campo.id" [options]="getOpcionesSelect(campo.opciones)"  class="w-full"></p-select>
+                <label [for]="campo.id">{{ campo.nombre_campo }}</label>
+              </p-floatlabel>
+                <p-inputgroup-addon>
+                  <p-button icon="pi pi-pencil" pTooltip="Editar campo" severity="secondary" variant="text"  (click)="edicionCampo(campo, 'Editar lista desplegable')"/>
+                </p-inputgroup-addon>
+              </p-inputgroup>
+
+
+              @if (campo.requerido) {
+                <span  class="text-xs text-red-500 w-full">Este campo va a ser obligatorio</span>
+              }@else {
+                <span class="text-xs text-gray-500 w-full">Sin validación</span>
+              }
+            }
+            @case ('Agregar casilla de verificación') {
+
+              <p-inputgroup>
+              <div class="flex items-center gap-2 w-full">
+                <p-checkbox [inputId]="campo.id" ></p-checkbox>
+                <label [for]="campo.id" class="font-medium">{{ campo.nombre_campo }}</label>
+              </div>
+                <p-inputgroup-addon>
+                  <p-button icon="pi pi-pencil" pTooltip="Editar campo" severity="secondary" variant="text" (click)="edicionCampo(campo, 'Editar casilla de verificación')" />
+                </p-inputgroup-addon>
+              </p-inputgroup>
+
+
+              @if (campo.requerido) {
+                <span  class="text-xs text-red-500 w-full">Este campo va a ser obligatorio</span>
+              }@else {
+                <span class="text-xs text-gray-500 w-full">Sin validación</span>
+              }
+            }
+          }
+        </div>
+      }
+    </div>
+
+    <div class="flex justify-end">
+      <p-button label="Guardar Formulario" icon="pi pi-send" (click)="saveForm()"></p-button>
+    </div>
+  }
+
+  @if (camposDinamicos.length === 0) {
+    <div class="mt-4 p-4 border-2 border-dashed border-gray-300 rounded-lg text-center text-gray-500">
+      <i class="pi pi-plus-circle text-2xl mb-2"></i>
+      <p>No hay campos agregados. Usa el menú lateral para agregar campos al formulario.</p>
+    </div>
+  }
+  </div>
+
+  <div class="flex flex-col bg-white rounded-lg shadow-sm border border-gray-200 w-16 h-fit vertical-menu">
+
+    <div class="flex flex-col py-2">
+      <button
+        type="button"
+        class="flex items-center justify-center p-3 hover:bg-gray-50 transition-colors border-0 bg-transparent cursor-pointer"
+        (click)="toggleSidePanel('Agregar campo de texto')"
+        pTooltip="Agregar Campo de Texto"
+        tooltipPosition="left"
+        >
+        <i class="pi pi-pen-to-square text-gray-600 text-lg"></i>
+      </button>
+      <button
+        type="button"
+        class="flex items-center justify-center p-3 hover:bg-gray-50 transition-colors border-0 bg-transparent cursor-pointer"
+        (click)="toggleSidePanel('Agregar área de texto')"
+        pTooltip="Agregar Área de Texto"
+        tooltipPosition="left"
+        >
+        <i class="pi pi-bars text-gray-600 text-lg"></i>
+      </button>
+
+      <div class="mx-2 my-1 border-t border-gray-200"></div>
+      <button
+        type="button"
+        class="flex items-center justify-center p-3 hover:bg-gray-50 transition-colors border-0 bg-transparent cursor-pointer"
+        (click)="toggleSidePanel('Agregar campo numérico')"
+        pTooltip="Agregar Campo Numérico"
+        tooltipPosition="left"
+        >
+        <i class="pi pi-hashtag text-gray-600 text-lg"></i>
+      </button>
+      <button
+        type="button"
+        class="flex items-center justify-center p-3 hover:bg-gray-50 transition-colors border-0 bg-transparent cursor-pointer"
+        (click)="toggleSidePanel('Agregar lista desplegable')"
+        pTooltip="Agregar Lista Desplegable"
+        tooltipPosition="left"
+        >
+        <i class="pi pi-chevron-circle-down text-gray-600 text-lg"></i>
+      </button>
+      <div class="mx-2 my-1 border-t border-gray-200"></div>
+
+      <button
+        type="button"
+        class="flex items-center justify-center p-3 hover:bg-gray-50 transition-colors border-0 bg-transparent cursor-pointer"
+        (click)="toggleSidePanel('Agregar casilla de verificación')"
+        pTooltip="Agregar Casilla de Verificación"
+        tooltipPosition="left"
+        >
+        <i class="pi pi-check-square text-gray-600 text-lg"></i>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="showSidePanel"
+       class="card formulario-container flex flex-col w-full side-panel fade-enter"
+       [ngClass]="showSidePanel ? 'slide-in' : 'slide-out'">
+    <div class="font-bold text-xl mb-4">{{ campo_seleccionado }}</div>
+    <div class="mt-4">
+      <form [formGroup]="form" class="flex flex-col gap-4">
+
+        <div class="flex flex-wrap gap-2 w-full">
+          <p-floatlabel class="w-full">
+            <input id="nombre_campo" pInputText formControlName="nombre_campo" class="w-full" />
+            <label for="nombre_campo">Nombre del campo</label>
+          </p-floatlabel>
+          <app-error-messages ngClass="ml-2" [control]="form.get('nombre_campo')" class="error-message"></app-error-messages>
+        </div>
+
+
+        <div class="flex items-center gap-2">
+          <p-checkbox formControlName="requerido" binary="true"></p-checkbox>
+          <label for="requerido" class="font-semibold">Requerido</label>
+        </div>
+
+        <div *ngIf="campo_seleccionado === 'Agregar lista desplegable' || campo_seleccionado === 'Editar lista desplegable'" class="flex flex-col gap-4 opciones-container">
+          <div class="flex flex-col gap-2">
+            <label class="font-semibold">Gestionar Opciones</label>
+
+            <div class="flex gap-2">
+              <input
+                id="nueva-opcion"
+                pInputText
+                [(ngModel)]="nuevaOpcion"
+                [ngModelOptions]="{standalone: true}"
+                placeholder="Escribe una nueva opción..."
+                class="flex-1 nueva-opcion-input"
+              />
+              <button
+                type="button"
+                pButton
+                icon="pi pi-plus"
+                [disabled]="!nuevaOpcion.trim()"
+                (click)="agregarOpcion()"
+                class="p-button-sm"
+                tooltipPosition="left"
+                pTooltip="Agregar opción"
+              ></button>
+            </div>
+            <div *ngIf="opciones.length > 0" class="flex flex-col gap-2 mt-2">
+              <label class="text-sm font-medium text-gray-600">Opciones agregadas:</label>
+              <div class="max-h-40 overflow-y-auto border border-gray-200 rounded-md p-2 lista-opciones">
+                <div
+                  *ngFor="let opcion of opciones; let i = index"
+                  class="flex items-center justify-between p-2 bg-gray-50 rounded border-b border-gray-100 last:border-b-0 opcion-item opcion-item-enter"
+                >
+                  <span class="text-sm">{{ opcion }}</span>
+                  <button
+                    type="button"
+                    pButton
+                    icon="pi pi-times"
+                    (click)="eliminarOpcion(i)"
+                    class="p-button-sm p-button-text p-button-danger"
+                    pTooltip="Eliminar opción"
+                  ></button>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="opciones.length === 0" class="text-sm text-gray-500 italic">
+              No hay opciones agregadas. Agrega al menos una opción para crear la lista desplegable.
+            </div>
+          </div>
+          <input type="hidden" formControlName="opciones" />
+        </div>
+
+        <div class="flex flex-col gap-2 mt-6">
+          <button
+            type="button"
+            pButton
+            label="Cancelar"
+            (click)="cerrarSidePanel()"
+            class="p-button-secondary"
+          ></button>
+          <button
+            type="button"
+            pButton
+            label="Guardar"
+            [disabled]="!form.valid || (campo_seleccionado === 'Agregar lista desplegable' && opciones.length === 0)"
+            (click)="onSubmit()"
+            class="p-button-primary flex-1"
+          ></button>
+          @if (campo_seleccionado.includes('Editar')) {
+            <button
+            type="button"
+            pButton
+            severity="danger"
+            label="Eliminar"
+            (click)="eliminarCampo(form.get('id')?.value || '')"
+            class="p-button-primary flex-1"
+          ></button>
+          }
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

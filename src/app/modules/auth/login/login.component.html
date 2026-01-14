@@ -1,0 +1,111 @@
+<p-toast></p-toast>
+
+<!-- Professional Background -->
+<div class="professional-background">
+  <!-- Subtle Pattern Overlay -->
+  <div class="pattern-overlay"></div>
+
+  <!-- Geometric Shapes -->
+  <div class="geometric-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+</div>
+
+<!-- Main Login Container -->
+<div class="login-container">
+  <div class="login-card">
+    <!-- Logo/Brand Section -->
+    <div class="brand-section">
+      <div class="logo-container">
+        <i class="pi pi-eye logo-icon"></i>
+      </div>
+      <h1 class="brand-title">Óptica</h1>
+      <p class="brand-subtitle">Sistema de Gestión</p>
+    </div>
+
+    <!-- Login Form -->
+    <form [formGroup]="formLogin" class="login-form">
+      <div class="welcome-section">
+        <h2 class="welcome-title">Bienvenido</h2>
+        <p class="welcome-subtitle">Ingresa tus credenciales para continuar</p>
+      </div>
+
+      <!-- Username Field -->
+      <div class="input-group">
+        <div class="input-wrapper">
+          <p-iconfield class="w-full">
+            <p-inputicon class="pi pi-user input-icon" />
+            <input
+              formControlName="username"
+              type="text"
+              pInputText
+              class="custom-input w-full"
+              placeholder="Nombre de usuario"
+              autocomplete="username"
+            />
+          </p-iconfield>
+          <div class="input-underline"></div>
+        </div>
+        <app-error-messages ngClass="ml-2" [control]="formLogin.get('username')" class="error-message"></app-error-messages>
+      </div>
+
+      <!-- Password Field -->
+      <div class="input-group">
+        <div class="input-wrapper">
+          <p-iconfield class="w-full">
+            <p-inputicon class="pi pi-lock input-icon" />
+            <p-password
+              formControlName="password"
+              placeholder="Contraseña"
+              styleClass="w-full custom-password"
+              inputStyleClass="w-full custom-input-password"
+              [toggleMask]="true"
+              [feedback]="false"
+              autocomplete="current-password"
+            />
+          </p-iconfield>
+          <!-- <div class="input-underline"></div> -->
+        </div>
+        <app-error-messages ngClass="ml-2"  [control]="formLogin.get('password')" class="error-message"></app-error-messages>
+      </div>
+
+      <!-- Login Button -->
+      <div class="button-section">
+        <button
+          [disabled]="formLogin.invalid"
+          pButton
+          pRipple
+          label="Iniciar Sesión"
+          class="login-button w-full"
+          (click)="onSubmit()"
+          [loading]="isLoading()"
+          loadingIcon="pi pi-spinner pi-spin"
+        >
+          @if (!isLoading()) {
+            <i class="pi pi-sign-in button-icon"></i>
+          }
+        </button>
+      </div>
+      <div class="button-section">
+        <button
+          pButton
+          pRipple
+          label="Regresar"
+          class="login-button w-full"
+          (click)="navigate('/landing')"
+          icon="pi pi-arrow-circle-left"
+        >
+        </button>
+      </div>
+
+
+    </form>
+
+    <!-- Footer -->
+    <div class="login-footer">
+      <p class="footer-text">© 2025 Sistema Óptica. Todos los derechos reservados.</p>
+    </div>
+  </div>
+</div>

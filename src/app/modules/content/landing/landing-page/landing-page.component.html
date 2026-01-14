@@ -1,0 +1,34 @@
+        <div class="relative overflow-hidden flex flex-col justify-center">
+            <div
+                class="bg-circle opacity-50"
+                [style]="{ top: '-200px', left: '-700px' }"
+            ></div>
+            <div
+                class="bg-circle hidden lg:flex"
+                [style]="{
+                    top: '50px',
+                    right: '-800px',
+                    transform: 'rotate(60deg)',
+                }"
+            ></div>
+            <div class="landing-wrapper">
+                <app-topbar-widget/>
+                <div class="py-6 px-6 mx-0 md:mx-12 lg:mx-20 lg:px-20 z-20">
+                     @switch (activeSeccion()) {
+                        @case ('principal') { <app-homewidget /> }
+                        @case ('tienda') { <app-apps-widget /> }
+                        @case ('servicios') { <app-prueba-lentes/> }
+                        @case ('eventos') {
+                               <div class="-mx-6 lg:-mx-20">
+                                    <app-eventos-optica />
+                                </div>
+                             }
+                        @case ('nosotros') { <app-footer /> }
+                        @case ('clientes') { <app-clientslanding /> }
+                        @default { <p>Esta sección no se pudo encontrar.</p> }
+                        }
+                </div>
+            </div>
+        </div>
+
+        <!-- <app-configurator [simple]="true"/> -->

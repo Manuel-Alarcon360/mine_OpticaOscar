@@ -1,0 +1,282 @@
+<p-toast [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }" />
+<div class="flex flex-row w-full gap-4">
+  <div class="card flex flex-col   w-full">
+    <div class="font-bold text-2xl mb-3">{{historia?.nombre_formulario}}</div>
+    <form [formGroup]="informacionPrincipal">
+      <div class="mb-1">
+        <div class="flex flex-col md:flex-row w-full gap-4 mt-6">
+          <div class="flex flex-wrap w-full">
+            <p-floatlabel class="w-full">
+              <input id="nombre_completo" pInputText class="w-full" formControlName="nombre_completo" />
+              <label for="nombre_completo">Nombre completo</label>
+            </p-floatlabel>
+            <div class="flex absolute">
+              <app-error-messages [control]="informacionPrincipal.get('nombre_completo')"
+                class="error-message"></app-error-messages>
+            </div>
+          </div>
+          <div class="flex flex-wrap  w-full">
+            <p-floatlabel class="w-full">
+              <p-datepicker id="fecha_nacimiento" appendTo="body" class="w-full" formControlName="fecha_nacimiento"
+                [showIcon]="true" dateFormat="yy-mm-dd" [maxDate]="today" />
+              <label for="fecha_nacimiento">Fecha nacimiento</label>
+            </p-floatlabel>
+            <div>
+              <app-error-messages [control]="informacionPrincipal.get('fecha_nacimiento')"
+                class="error-message"></app-error-messages>
+            </div>
+          </div>
+          <div class="flex flex-wrap  w-full  ">
+            <p-floatlabel class="w-full">
+              <input id="edad" mode="decimal" pInputText placeholder="" class="w-full" formControlName="edad" />
+              <label for="edad" class="block text-sm text-gray-600 mb-1">Edad</label>
+            </p-floatlabel>
+          </div>
+        </div>
+        <div class="flex flex-col md:flex-row w-full gap-4 mt-7">
+
+          <div class="flex flex-wrap  w-full  ">
+            <p-floatlabel class="w-full">
+              <p-select inputId="over_label" [options]="estadosCiviles" optionLabel="name_estado" optionValue="id"
+                formControlName="estado_civil" styleClass="w-full">
+              </p-select>
+              <label for="over_label">Estado civil</label>
+            </p-floatlabel>
+            <app-error-messages [control]="informacionPrincipal.get('estado_civil')"
+              class="error-message"></app-error-messages>
+
+          </div>
+
+          <div class="flex flex-wrap w-full">
+            <p-floatlabel class="w-full">
+              <input id="eps" pInputText class="w-full" formControlName="eps" />
+              <label for="eps">EPS</label>
+            </p-floatlabel>
+            <app-error-messages [control]="informacionPrincipal.get('eps')" class="error-message"></app-error-messages>
+
+          </div>
+          <div class="flex flex-wrap  w-full  ">
+            <p-floatlabel class="w-full">
+              <input id="vinculacion" pInputText class="w-full" formControlName="vinculacion" />
+              <label for="vinculacion">Vinculación</label>
+            </p-floatlabel>
+            <app-error-messages [control]="informacionPrincipal.get('vinculacion')"
+              class="error-message"></app-error-messages>
+
+          </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row w-full gap-4 mt-7">
+          <div class="flex flex-wrap  w-full">
+            <p-floatlabel class="w-full">
+              <input id="direccion" pInputText class="w-full" formControlName="direccion" />
+              <label for="direccion">Dirección</label>
+            </p-floatlabel>
+            <app-error-messages [control]="informacionPrincipal.get('direccion')"
+              class="error-message"></app-error-messages>
+
+          </div>
+          <div class="flex flex-wrap  w-full ">
+            <p-floatlabel class="w-full">
+              <input id="telefono" pInputText class="w-full" formControlName="telefono" />
+              <label for="telefono">Teléfono</label>
+            </p-floatlabel>
+            <app-error-messages [control]="informacionPrincipal.get('telefono')"
+              class="error-message"></app-error-messages>
+
+          </div>
+          <div class="flex flex-wrap  w-full ">
+            <p-floatlabel class="w-full">
+              <input id="ocupacion" pInputText class="w-full" formControlName="ocupacion" />
+              <label for="ocupacion">Ocupación</label>
+            </p-floatlabel>
+            <app-error-messages [control]="informacionPrincipal.get('ocupacion')"
+              class="error-message"></app-error-messages>
+
+          </div>
+        </div>
+        <div class="flex flex-col md:flex-row gap-4 mt-7">
+          <div class="flex flex-wrap  w-full">
+            <p-floatlabel class="w-full">
+              <input id="responsable" pInputText class="w-full" formControlName="responsable" />
+              <label for="direccion">Responsable</label>
+            </p-floatlabel>
+          </div>
+          <div class="flex flex-wrap  w-full">
+            <p-floatlabel class="w-full">
+              <input id="tel_responsable" pInputText class="w-full" formControlName="tel_responsable" />
+              <label for="telefono">Teléfono responsable</label>
+            </p-floatlabel>
+          </div>
+        </div>
+        <div class="flex flex-col md:flex-row gap-4 mt-7">
+          <p-floatlabel class="w-full">
+            <textarea id="motivo_consulta" pTextarea formControlName="motivo_consulta" class="w-full"
+              rows="2"></textarea>
+            <label>Motivo consulta</label>
+            <app-error-messages [control]="informacionPrincipal.get('motivo_consulta')"
+              class="error-message"></app-error-messages>
+
+          </p-floatlabel>
+
+        </div>
+      </div>
+    </form>
+
+    <h1 class="font-bold text-xl text-900 m-0 mt-4">Consultas</h1>
+    <p-tabs value="0" class="mt-4" scrollable>
+      <p-tablist>
+        @for (tab of tabs; track tab.value) {
+        <p-tab [value]="tab.value">{{ tab.title }}</p-tab>
+        }
+      </p-tablist>
+      <p-divider />
+      <p-tabpanels>
+        @for (tab of tabs; track tab.value) {
+        <p-tabpanel [value]="tab.value">
+          @if (tab.content && tab.content.length > 0) {
+          <div class="space-y-4">
+            <div class="flex flex-row justify-between items-center bg-gray-50 p-4 rounded-lg ">
+              <div>
+                <h4 class="font-semibold text-lg mb-3 text-gray-800">
+                  <i class="pi pi-calendar mr-2"></i>
+                  Consulta realizada el {{ tab.content[0]?.fecha_creacion.split('T')[0] }}
+                </h4>
+                <p class="text-sm text-gray-600 mb-2">
+                  Respuestas registradas
+                </p>
+              </div>
+              <div class="flex justify-end">
+                <p-button (click)="onGeneratePDF(tab.value, tab.content)" label="Exportar PDF" icon="pi pi-file-pdf" severity="contrast" [outlined]="true" styleClass="!bg-white !text-gray-700 !border-gray-300" />
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              @for (respuesta of tab.content; track respuesta.id) {
+              <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="font-medium text-gray-800">
+                    {{ respuesta.label_input }}
+                  </span>
+                  <span class="text-xs text-gray-400">
+                    ID: {{ respuesta.id }}
+                  </span>
+                </div>
+                <div class="mb-3">
+                  <p class="text-xs text-gray-500 font-medium mb-1">Respuesta:</p>
+                  <div class="bg-blue-50 px-3 py-2 rounded border-l-4 border-blue-400">
+                    <span class="text-gray-700">{{ respuesta.respuesta_campo }}</span>
+                  </div>
+                </div>
+
+              </div>
+              }
+            </div>
+
+          </div>
+          }@else if(tab.content === 1){
+          <!-- Sección de campos dinámicos -->
+          <div class="flex flex-row w-full gap-4">
+            <div class="flex flex-col gap-4 main-content collapsed w-full max-w-none">
+              @if (camposDinamicos.length > 0) {
+              <div class="flex flex-col md:flex-row gap-4 flex-wrap">
+                <form [formGroup]="form" class="w-full" class="flex flex-wrap gap-4 w-full">
+                  <div formArrayName="campos" class="flex flex-wrap gap-3 w-full">
+                    @for (control of camposFormArray.controls; track $index; let i = $index) {
+                    @let tipo = camposDinamicos[i].tipo;
+                    <div [formGroupName]="i" class="flex flex-col  my-2"
+                      [ngClass]="tipo === 'textarea' ? 'w-full' : 'flex-1 min-w-[280px]'">
+                      @switch (tipo) {
+                      @case ('text') {
+                      <p-inputgroup>
+                        <p-floatlabel class="w-full">
+                          <input [id]="camposDinamicos[i].id" pInputText class="w-full"
+                            formControlName="respuesta_campo" />
+                          <label [for]="camposDinamicos[i].id">{{ camposDinamicos[i].nombre_campo }}</label>
+                        </p-floatlabel>
+                      </p-inputgroup>
+                      <app-error-messages [control]="control.get('respuesta_campo')"
+                        class="error-message"></app-error-messages>
+                      }
+                      @case ('textarea') {
+                      <div>
+                        <p-inputgroup>
+                          <p-floatlabel class="w-full">
+                            <textarea [id]="camposDinamicos[i].id" pTextarea class="w-full" rows="2"
+                              formControlName="respuesta_campo"></textarea>
+                            <label [for]="camposDinamicos[i].id">{{ camposDinamicos[i].nombre_campo }}</label>
+                          </p-floatlabel>
+                        </p-inputgroup>
+                        <app-error-messages [control]="control.get('respuesta_campo')"
+                          class="error-message"></app-error-messages>
+                      </div>
+                      }
+                      @case ('number') {
+                      <p-inputgroup>
+                        <p-floatlabel class="w-full">
+                          <p-inputnumber [inputId]="camposDinamicos[i].id" class="w-full" placeholder=""
+                            formControlName="respuesta_campo" [showButtons]="false" mode="decimal">
+                          </p-inputnumber>
+                          <label [for]="camposDinamicos[i].id">{{ camposDinamicos[i].nombre_campo }}</label>
+                        </p-floatlabel>
+                      </p-inputgroup>
+                      <app-error-messages [control]="control.get('respuesta_campo')"
+                        class="error-message"></app-error-messages>
+                      }
+                      @case ('select') {
+                      <p-inputgroup>
+                        <p-floatlabel class="w-full">
+                          <p-select appendTo="body" [inputId]="camposDinamicos[i].id" formControlName="respuesta_campo"
+                            [options]="getOpcionesSelect(camposDinamicos[i].opciones)" class="w-full">
+                          </p-select>
+                          <label [for]="camposDinamicos[i].id">{{ camposDinamicos[i].nombre_campo }}</label>
+                        </p-floatlabel>
+                      </p-inputgroup>
+                      <app-error-messages [control]="control.get('respuesta_campo')"
+                        class="error-message"></app-error-messages>
+                      }
+                      @case ('checkbox') {
+                      <p-inputgroup>
+                        <div class="flex items-center  w-full">
+                          <p-checkbox [inputId]="camposDinamicos[i].id" formControlName="respuesta_campo"
+                            binary="true"></p-checkbox>
+                          <label [for]="camposDinamicos[i].id" class="font-medium">
+                            {{ camposDinamicos[i].nombre_campo }}
+                          </label>
+                        </div>
+                      </p-inputgroup>
+                      <app-error-messages [control]="control.get('respuesta_campo')"
+                        class="error-message"></app-error-messages>
+                      }
+
+                      }
+                    </div>
+                    }
+                  </div>
+                </form>
+              </div>
+              <div class="flex justify-end mt-2">
+                <p-button label="Guardar historia clinica" [disabled]="camposFormArray.invalid" icon="pi pi-send"
+                  (click)="construccionDatosEnvio()"></p-button>
+              </div>
+              }
+            </div>
+          </div>
+          @if (camposDinamicos.length === 0) {
+          <div class="mt-4 p-4 border-2 border-dashed border-gray-300 rounded-lg text-center text-gray-500">
+            <p>No hay un formulario marcado como principal.</p>
+          </div>
+          }
+          }@else {
+          {{tab.content}}
+          <div class="text-center py-8">
+            <i class="pi pi-inbox text-4xl text-gray-300 mb-4"></i>
+            <h4 class="text-gray-500 text-lg mb-2">No hay consultas registradas</h4>
+            <p class="text-gray-400">No se encontraron datos para esta pestaña</p>
+          </div>
+          }
+        </p-tabpanel>
+        }
+      </p-tabpanels>
+    </p-tabs>
+  </div>
+</div>

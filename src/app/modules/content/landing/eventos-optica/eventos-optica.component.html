@@ -1,0 +1,84 @@
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    
+    <!-- <div class="video-container rounded-xs">
+        <video
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            poster="assets/img/video-cover.jpg"
+            width="100%"
+            >
+            <source
+                src="assets/video/PROMO_DOCTOR_OSQUITAR.mp4"
+                type="video/mp4"
+            />
+            Tu navegador no soporta video HTML5.
+        </video>
+    </div> -->
+    <div class="video-container">
+        <video controls preload="none" poster="assets/img/video-cover.jpg" width="100%">
+            <source src="assets/video/PROMO_DOCTOR_OSQUITAR.mp4" type="video/mp4" />
+            Tu navegador no soporta video HTML5.
+        </video>
+    </div>
+    <div class=" flex w-full">
+        <p-accordion class="w-full" [multiple]="true" value="0" >
+          @for (evento of eventos; track evento.id; let i = $index) {
+            <p-accordion-panel value={{i}}>
+              <p-accordion-header> {{ evento.titulo }}</p-accordion-header>
+              <p-accordion-content>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
+                  <div class="w-full">
+                    @if (evento.imagen_evento) {
+                      <img
+                        [src]="evento.imagen_evento"
+                        class="w-full rounded-md object-cover"
+                        alt="imagen evento"
+                      />
+                    } @else {
+                      <div class="flex items-center justify-center h-40 bg-gray-100 rounded-md text-gray-400 text-sm" >
+                        <img
+                          src="assets/img/optometria.jpg"
+                          class="w-full rounded-md object-cover"
+                          alt="imagen evento"
+                          />
+                      </div>
+                    }
+                  </div>
+                  <div class="md:col-span-2">
+                    <p class="m-0 text-gray-700">
+                      {{ evento.descripcion }}
+                    </p>
+                  </div>
+                </div>
+              </p-accordion-content>
+            </p-accordion-panel>
+          }
+
+        </p-accordion>
+    </div>
+</div>
+
+<!-- <div class="grid grid-cols-2 gap-4">
+  <div class="video-container">
+    <video
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      poster="assets/img/video-cover.jpg"
+      width="100%"
+    >
+      <source
+        src="assets/video/PROMO_DOCTOR_OSQUITAR.mp4"
+        type="video/mp4"
+      />
+      Tu navegador no soporta video HTML5.
+    </video>
+  </div>
+
+  <div class="card">02</div>
+</div> -->

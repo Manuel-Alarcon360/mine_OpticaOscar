@@ -1,0 +1,51 @@
+<div class="probador-gafas-container">
+  <div class="header">
+    <h2>Probador Virtual de Gafas</h2>
+    <p *ngIf="!isModelLoaded" class="loading-message">Cargando modelos de detección facial...</p>
+    <p *ngIf="isModelLoaded && !isCameraActive" class="info-message">Presiona "Activar Cámara" para comenzar</p>
+  </div>
+
+  <div class="video-container">
+    <video #video autoplay playsinline [class.active]="isCameraActive"></video>
+    <canvas #canvas [class.active]="isCameraActive"></canvas>
+    <div *ngIf="!isCameraActive" class="placeholder">
+      <i class="pi pi-camera"></i>
+      <p>Cámara desactivada</p>
+    </div>
+  </div>
+
+  <div class="controls">
+    <p-button
+      (click)="toggleCamera()"
+      [label]="isCameraActive ? 'Detener Cámara' : 'Activar Cámara'"
+      [icon]="isCameraActive ? 'pi pi-times' : 'pi pi-camera'"
+      [severity]="isCameraActive ? 'danger' : 'success'"
+      [disabled]="!isModelLoaded"
+      styleClass="control-button"
+    />
+
+    <p-button
+      (click)="capturePhoto()"
+      label="Capturar Foto"
+      icon="pi pi-image"
+      severity="info"
+      [disabled]="!isCameraActive"
+      styleClass="control-button"
+    />
+  </div>
+
+  <div *ngIf="isModelLoaded" class="glasses-selector">
+    <h3>Selecciona un modelo de gafas:</h3>
+    <div class="glasses-grid">
+      <div
+        *ngFor="let glasses of availableGlasses; let i = index"
+        class="glasses-card"
+        [class.selected]="selectedGlasses === i"
+        (click)="changeGlasses(i)"
+      >
+        <img [src]="glasses.image" [alt]="glasses.name">
+        <p>{{ glasses.name }}</p>
+      </div>
+    </div>
+  </div>
+</div>
