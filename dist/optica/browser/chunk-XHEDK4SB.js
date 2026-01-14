@@ -1,0 +1,1 @@
+import"./chunk-TSRGIXR5.js";var e=[{path:"home",data:{breadcrumb:"Inicio"},loadComponent:()=>import("./chunk-VITTH6GL.js").then(o=>o.HomeComponent)},{path:"**",redirectTo:"home"}];export{e as default};

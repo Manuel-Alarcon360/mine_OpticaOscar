@@ -1,0 +1,1 @@
+import"./chunk-TSRGIXR5.js";var o=[{path:"historia-clinica",data:{breadcrumb:"Historia clinica"},loadComponent:()=>import("./chunk-OGK2PI5M.js").then(t=>t.VistaHistoriaComponent)},{path:"lentes",loadComponent:()=>import("./chunk-KULIF7KC.js").then(t=>t.PruebaLentesComponent)}];export{o as default};
