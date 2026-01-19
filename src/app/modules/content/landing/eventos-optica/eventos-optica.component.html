@@ -25,22 +25,6 @@
     </div>
     <div class=" flex w-full">
         <p-accordion class="w-full" [multiple]="true" value="0" >
-          <p-accordion class="w-full" [multiple]="true" value="0">
-
-  <!-- PANEL DE PRUEBA FIJO -->
-  <p-accordion-panel value="test">
-    <p-accordion-header>
-      🚀 Evento de prueba (FRONT)
-    </p-accordion-header>
-    <p-accordion-content>
-      <p class="m-0 text-gray-700">
-        Este texto es estático y viene solo del frontend.
-        Si ves esto, Angular está renderizando bien el HTML.
-      </p>
-    </p-accordion-content>
-  </p-accordion-panel>
-</p-accordion>
-
           @for (evento of eventos; track evento.id; let i = $index) {
             <p-accordion-panel value={{i}}>
               <p-accordion-header> {{ evento.titulo }}</p-accordion-header>
