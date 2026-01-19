@@ -44,8 +44,8 @@ export class LandingService {
 
    getProductsData() {
         return[
-            { image: 'assets/img/img/clientes/camilo_sanchez.jpg', name: 'Camilo Sánchez' },
-            { image: 'assets/img/img/clientes/felipe_romero.jpg', name: 'Felipe Romero' }
+            { image: 'assets/img/clientes/camilo_sanchez.jpg', name: 'Camilo Sánchez' },
+            { image: 'assets/img/clientes/felipe_romero.jpg', name: 'Felipe Romero' }
         ];
     }
 

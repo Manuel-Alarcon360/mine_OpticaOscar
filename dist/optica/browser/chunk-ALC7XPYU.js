@@ -1,1 +1,0 @@
-var e="integracion/",i=(r=>(r.list_integraciones=e+"list_integracion/",r.crear_integracion=e+"crear_integracion/",r.editar_integracion=e+"list_integracion/",r.eliminar_integracion=e+"list_integracion/",r.get_url_client=e+"obtener_urls_clientes/",r))(i||{});export{i as a};
