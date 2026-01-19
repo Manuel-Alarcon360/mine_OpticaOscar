@@ -19,7 +19,7 @@ export class ClientesService {
 
   getClient(params: number): Observable<PaginatorData<Cliente>> {
     return this.http
-      .get<PaginatorData<Cliente>>(`${this.API}${this.URI.consultarClientes}`, {
+      .get<PaginatorData<Cliente>>(`${this.URI.consultarClientes}`, {  //`${this.API}${this.URI.consultarClientes}`
         params: { page: params.toString() },
       })
       .pipe(
@@ -38,7 +38,7 @@ export class ClientesService {
       );
   }
   crearCliente(form: any){
-    return this.http.post(this.API + this.URI.crearCliente, form);
+    return this.http.post(this.URI.crearCliente, form); //this.API + this.URI.crearCliente, form
   }
 
   $getpaciente(id_paciente: number | string): Observable<DetalleResponse<PacienteData>>{
