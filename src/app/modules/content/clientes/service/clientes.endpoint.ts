@@ -1,6 +1,6 @@
 const controller = 'integracion/';
 const controllerPacientes = 'paciente/';
-const BASE_URL_TEMP = 'https://25951a85fe9b.ngrok-free.app/api/';
+const BASE_URL_TEMP = 'https://2442d0cc6284.ngrok-free.app/api/';
 
 export enum ClienteEndpoint {
     // consultarClientes = controller + 'obtener_clientes_externos/',
