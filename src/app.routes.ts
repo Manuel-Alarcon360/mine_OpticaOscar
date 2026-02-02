@@ -4,7 +4,10 @@ import { loginGuard } from '@/core/guard/login.guard';
 import { rolGuard } from '@/core/guard/rol.guard';
 export const routes: Routes = [
 
+    { path: '', redirectTo: 'landing', pathMatch: 'full' },
+
     { path: 'landing', loadComponent: () => import('@/modules/content/landing/landing-page/landing-page.component').then(m => m.LandingPageComponent) },
+
     {
         path: 'auth',
         loadChildren: () => import('@/modules/auth/auth.routes'),
@@ -51,7 +54,7 @@ export const routes: Routes = [
             },
             {
                 path:"**",
-                redirectTo:"dashboard"
+                redirectTo:"landing"
             }
         ],
     },
